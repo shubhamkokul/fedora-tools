@@ -47,17 +47,18 @@ config.tab_max_width = 32
 config.show_new_tab_button_in_tab_bar = false
 
 -- ── Status bar — leader indicator + clock ─────────────────────────────────────
+-- set_right_status is unreliable in retro tab bar mode; clock lives on the left
+config.status_update_interval = 1000
+
 wezterm.on('update-status', function(window, _)
-  local leader = window:leader_is_active() and ' 󰌋 WAIT ' or ''
+  local leader = window:leader_is_active() and ' 󰌋 WAIT  ' or ''
+  local time   = wezterm.strftime '%H:%M'
+
   window:set_left_status(wezterm.format {
     { Foreground = { AnsiColor = 'Yellow' } },
-    { Text = leader },
-  })
-
-  local time = wezterm.strftime '%H:%M'
-  window:set_right_status(wezterm.format {
+    { Text       = leader },
     { Foreground = { AnsiColor = 'BrightBlack' } },
-    { Text = '  ' .. time .. '  ' },
+    { Text       = ' ' .. time .. ' ' },
   })
 end)
 
