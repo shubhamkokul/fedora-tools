@@ -87,6 +87,18 @@ Leader key: `CTRL+A` (tmux-style)
 - **Scrollback:** 10,000 lines
 - **Right-click:** paste
 
+## Alternatives Considered
+
+| Terminal | Why I looked at it | Why I passed |
+|---|---|---|
+| **GNOME Terminal** | Default on Fedora, zero setup | No GPU rendering, no multiplexing, config is buried in gsettings |
+| **Alacritty** | Fast, GPU-accelerated, YAML/TOML config | No built-in tabs or pane splitting — still needs tmux on top |
+| **Kitty** | GPU-accelerated, scriptable, good font rendering | Python-based kittens feel bolted on; config less ergonomic than Lua |
+| **Tilix** | Tiling built into GNOME, familiar UX | GTK-dependent, not GPU-accelerated, development slowed down |
+| **Foot** | Wayland-native, minimal and fast | No multiplexing, limited scripting, designed for simplicity over power |
+
+WezTerm won on: **Lua config + built-in multiplexing + GPU rendering** — all three in one package.
+
 ## Philosophy
 
 Configured to feel like tmux without the overhead. If you already have tmux muscle memory, you'll be productive in under 5 minutes.
