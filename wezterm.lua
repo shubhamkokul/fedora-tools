@@ -57,7 +57,7 @@ wezterm.on('update-status', function(window, _)
   window:set_left_status(wezterm.format {
     { Foreground = { AnsiColor = 'Yellow' } },
     { Text       = leader },
-    { Foreground = { AnsiColor = 'BrightBlack' } },
+    { Foreground = { Color = '#cdd6f4' } },
     { Text       = ' ' .. time .. ' ' },
   })
 end)
