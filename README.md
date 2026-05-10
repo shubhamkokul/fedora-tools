@@ -38,6 +38,80 @@ Run a single phase:
 
 ---
 
+## What gets installed
+
+### Phase 1 — System base
+- Full system update
+- RPM Fusion (free + nonfree) — unlocks codecs, drivers, extra packages
+- Flathub — app store for Flatpak apps
+- GStreamer codecs + ffmpeg — video/audio playback
+- GNOME Tweaks, Extension Manager, dconf-editor
+
+### Phase 2 — Desktop
+- **Tiling Shell** — Windows-style snap zones (5 custom layouts applied)
+- **Dash to Dock** config — intellihide, autohide tuned to not interfere with normal use
+- Papirus icon theme
+- Bibata cursor theme
+
+### Phase 3 — Terminal
+- zsh + Oh My Zsh
+- tmux, htop, btop, fzf, bat, eza, ripgrep, fd, jq, tree, neofetch
+- JetBrains Mono font
+- **WezTerm** (Flatpak) + config from this repo applied automatically
+
+### Phase 4 — Dev tools
+- git + git-lfs, GitHub CLI (`gh`)
+- Java 21 (OpenJDK) + JAVA_HOME wired into ~/.zshrc
+- Maven 3.9
+- Node.js 22 via nvm
+- Python 3 + pip + virtualenv
+- Docker + docker-compose (service enabled, user added to docker group)
+- kubectl
+- PowerShell Core (pwsh)
+- PostgreSQL 18 — installed, not initialized (run `postgresql-setup --initdb` when needed)
+- pgAdmin4 (Flatpak)
+- Grafana — installed, service disabled (start manually when needed)
+- MongoDB 8.0 + mongosh — installed, service disabled (start manually when needed)
+
+### Phase 5 — IDEs
+- VS Code (RPM, official Microsoft repo)
+- IntelliJ IDEA Community (Flatpak)
+
+### Phase 6 — AI tools
+- Claude Code CLI (`npm install -g @anthropic/claude-code`)
+- Obsidian (Flatpak)
+- SolutionByHour vault cloned from GitHub
+- ANTHROPIC_API_KEY written to ~/.zshrc if provided
+
+### Phase 7 — Gaming
+- Steam (Flatpak)
+- ProtonUp-Qt — GE-Proton version manager
+- GameMode — CPU/GPU boost while gaming
+- MangoHUD — FPS + hardware overlay
+- **Game dock guard** — systemd service that hides the dock for any Steam game
+
+### Phase 8 — Apps
+- Discord (Flatpak)
+- Google Chrome (RPM, official repo)
+- rclone — OneDrive/cloud storage CLI
+- nautilus-open-terminal — right-click → open terminal in Files
+
+---
+
+## What requires manual steps after running
+
+| Step | Why it can't be automated |
+|---|---|
+| `gh auth login` | Interactive browser OAuth |
+| `ssh-keygen` + add to GitHub | Key generation is interactive; adding requires GitHub access |
+| Steam sign-in + enable Proton | GUI only |
+| ProtonUp-Qt → install GE-Proton | GUI only |
+| `rclone config` | Interactive OAuth flow |
+| `ANTHROPIC_API_KEY` | Secret — pass as env var or add manually |
+| `postgresql-setup --initdb` | One-time DB init, only when you need it |
+
+---
+
 ## WezTerm
 
 GPU-accelerated terminal with built-in multiplexing. Replaces GNOME Terminal + tmux.
