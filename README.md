@@ -6,10 +6,35 @@ Personal setup scripts and configs for Fedora Workstation. Built for a dev + gam
 
 | File | What it does |
 |---|---|
+| `fedora-setup.sh` | Full post-install setup script — runs all phases in order |
 | `wezterm.lua` | WezTerm terminal config — GPU rendering, tmux-style keybinds, Catppuccin Mocha |
 | `tiling-shell-setup.sh` | Installs Tiling Shell GNOME extension + applies 5 custom snap layouts |
 | `game-dock-guard.sh` | Hides Dash to Dock while any Steam game is running, restores on exit |
 | `game-dock-guard.service` | systemd user service to run game-dock-guard at login |
+
+## Quick start (fresh Fedora install)
+
+```bash
+git clone https://github.com/shubhamkokul/fedora-tools.git ~/Dev/fedora-tools
+cd ~/Dev/fedora-tools
+
+# Phase 1 — system base (then reboot)
+./fedora-setup.sh phase1
+
+# After reboot — everything else
+GIT_NAME="Shubham Kokul" GIT_EMAIL="shubhamkokul@gmail.com" ./fedora-setup.sh post-reboot
+```
+
+Override any config with env vars:
+```bash
+GIT_NAME="Your Name" GIT_EMAIL="you@email.com" ANTHROPIC_API_KEY="sk-..." ./fedora-setup.sh post-reboot
+```
+
+Run a single phase:
+```bash
+./fedora-setup.sh phase4   # dev tools only
+./fedora-setup.sh phase7   # gaming only
+```
 
 ---
 
