@@ -1,0 +1,13 @@
+[Unit]
+Description=Hide dock while any Steam game is running
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/Dev/game-dock-guard.sh
+Restart=on-failure
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
+
+[Install]
+WantedBy=graphical-session.target
