@@ -157,6 +157,11 @@ phase4() {
     log "Installing Maven..."
     sudo dnf install -y maven
 
+    log "Installing Go..."
+    sudo dnf install -y golang
+    append_if_missing 'export GOPATH=$HOME/go' ~/.zshrc
+    append_if_missing 'export PATH=$GOPATH/bin:$PATH' ~/.zshrc
+
     log "Installing nvm + Node.js 22..."
     if [ ! -d "$HOME/.nvm" ]; then
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
