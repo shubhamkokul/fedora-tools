@@ -22,12 +22,12 @@ cd ~/Dev/fedora-tools
 ./fedora-setup.sh phase1
 
 # After reboot — everything else
-GIT_NAME="Shubham Kokul" GIT_EMAIL="shubhamkokul@gmail.com" ./fedora-setup.sh post-reboot
+GIT_NAME="Your Name" GIT_EMAIL="you@example.com" GITHUB_USERNAME="yourhandle" ./fedora-setup.sh post-reboot
 ```
 
-Override any config with env vars:
+Optionally pass your Anthropic API key:
 ```bash
-GIT_NAME="Your Name" GIT_EMAIL="you@email.com" ANTHROPIC_API_KEY="sk-..." ./fedora-setup.sh post-reboot
+GIT_NAME="Your Name" GIT_EMAIL="you@example.com" GITHUB_USERNAME="yourhandle" ANTHROPIC_API_KEY="sk-..." ./fedora-setup.sh post-reboot
 ```
 
 Run a single phase:

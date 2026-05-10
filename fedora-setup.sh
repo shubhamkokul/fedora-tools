@@ -11,9 +11,9 @@
 set -euo pipefail
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
-GIT_NAME="${GIT_NAME:-Shubham Kokul}"
-GIT_EMAIL="${GIT_EMAIL:-shubhamkokul@gmail.com}"
-GITHUB_USERNAME="${GITHUB_USERNAME:-shubhamkokul}"
+GIT_NAME="${GIT_NAME:-}"
+GIT_EMAIL="${GIT_EMAIL:-}"
+GITHUB_USERNAME="${GITHUB_USERNAME:-}"
 FEDORA_TOOLS_DIR="${FEDORA_TOOLS_DIR:-$HOME/Dev/fedora-tools}"
 # ANTHROPIC_API_KEY — set this in your environment before running, or add manually after
 # ──────────────────────────────────────────────────────────────────────────────
@@ -316,6 +316,12 @@ phase8() {
 
 # ─── MAIN ─────────────────────────────────────────────────────────────────────
 main() {
+    if [ -z "$GIT_NAME" ] || [ -z "$GIT_EMAIL" ] || [ -z "$GITHUB_USERNAME" ]; then
+        echo -e "${RED}Missing required env vars. Set before running:${NC}"
+        echo "  GIT_NAME=\"Your Name\" GIT_EMAIL=\"you@example.com\" GITHUB_USERNAME=\"yourhandle\" ./fedora-setup.sh"
+        exit 1
+    fi
+
     echo -e "${BLUE}"
     echo "  ┌─────────────────────────────────────────┐"
     echo "  │        Fedora Post-Install Setup         │"
