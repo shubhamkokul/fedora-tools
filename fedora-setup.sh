@@ -317,6 +317,11 @@ phase8() {
 
     log "Installing Nautilus extras..."
     sudo dnf install -y nautilus-open-terminal || true
+
+    log "Installing NordVPN..."
+    sh <(curl -sSf https://downloads.nordcdn.com/apps/linux/install.sh) -n || true
+    sudo usermod -aG nordvpn "$USER" || true
+    warn "NordVPN installed — run 'nordvpn login' to authenticate (log out first for group to take effect)"
 }
 
 # ─── MAIN ─────────────────────────────────────────────────────────────────────
