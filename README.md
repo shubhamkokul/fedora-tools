@@ -1,106 +1,85 @@
-# wezterm-config
+# fedora-tools
 
-My personal [WezTerm](https://wezfurlong.org/wezterm/) configuration — built for engineers who live in the terminal.
+Personal setup scripts and configs for Fedora Workstation. Built for a dev + gaming machine (AMD RX 6800, GNOME, Wayland).
 
-## Why WezTerm
+## What's in here
 
-The terminal used to be a tool you visited. Now, with LLMs and tools like Claude Code, Copilot, and Aider, the terminal is where you *work* — running agents, reviewing diffs, prompting, iterating. That shift changed what I need from a terminal emulator.
+| File | What it does |
+|---|---|
+| `wezterm.lua` | WezTerm terminal config — GPU rendering, tmux-style keybinds, Catppuccin Mocha |
+| `tiling-shell-setup.sh` | Installs Tiling Shell GNOME extension + applies 5 custom snap layouts |
+| `game-dock-guard.sh` | Hides Dash to Dock while any Steam game is running, restores on exit |
+| `game-dock-guard.service` | systemd user service to run game-dock-guard at login |
 
-GNOME Terminal was fine when the IDE did the heavy lifting. But when you're splitting panes to run an agent in one, watch logs in another, and edit files in a third — you need a terminal that keeps up.
+---
 
-WezTerm delivers:
+## WezTerm
 
-- **GPU-accelerated rendering** — smooth at 120fps, no lag when tailing logs
-- **Built-in multiplexing** — no separate tmux install, configured in Lua
-- **Lua config** — your terminal settings are code: functions, conditionals, event hooks
-- **Consistent across platforms** — Linux and macOS, same config file
+GPU-accelerated terminal with built-in multiplexing. Replaces GNOME Terminal + tmux.
 
-## Setup
-
-### Install WezTerm
-
-**Fedora / RHEL:**
-```bash
-sudo dnf install wezterm
-```
-
-**macOS (Homebrew):**
-```bash
-brew install --cask wezterm
-```
-
-**Other:** See [wezfurlong.org/wezterm/installation](https://wezfurlong.org/wezterm/installation.html)
-
-### Install font
-
-This config uses [JetBrains Mono Nerd Font](https://www.nerdfonts.com/font-downloads).
+### Install
 
 ```bash
-# Fedora
-sudo dnf install jetbrains-mono-fonts
-
-# Then install the Nerd Font variant from nerdfonts.com
-# and fc-cache -fv
-```
-
-### Apply config
-
-```bash
+flatpak install flathub org.wezfurlong.wezterm
 mkdir -p ~/.config/wezterm
 cp wezterm.lua ~/.config/wezterm/wezterm.lua
 ```
 
-Restart WezTerm — changes apply immediately (live reload supported).
+### Key bindings
 
-## Key Bindings
-
-Leader key: `CTRL+A` (tmux-style)
+Leader key: `CTRL+A`
 
 | Keys | Action |
 |---|---|
 | `LEADER + \|` | Split pane vertically |
 | `LEADER + -` | Split pane horizontally |
-| `LEADER + h/j/k/l` | Navigate panes (vim-style) |
+| `LEADER + h/j/k/l` | Navigate panes |
 | `LEADER + H/J/K/L` | Resize pane |
 | `LEADER + z` | Zoom/unzoom pane |
 | `LEADER + c` | New tab |
 | `LEADER + n / p` | Next / previous tab |
-| `LEADER + 1-9` | Jump to tab by number |
-| `LEADER + ,` | Rename tab |
 | `LEADER + x` | Close pane |
-| `LEADER + [` | Enter copy mode (scroll + select) |
-| `LEADER + ]` | Paste from clipboard |
-| `CTRL+C` | Copy if text selected, else send SIGINT |
-| `CTRL+V` | Paste |
-| `CTRL + =/-/0` | Increase / decrease / reset font size |
-| `LEADER + u/d` | Scroll half page up / down |
+| `CTRL+C` | Copy if selected, else SIGINT |
 
-## What's Configured
+---
 
-- **Color scheme:** Catppuccin Mocha
-- **Font:** JetBrainsMono Nerd Font 13pt
-- **Rendering:** WebGPU, 120fps max
-- **Transparency:** 95% opacity
-- **Inactive pane dimming:** desaturated + dimmed so focus is obvious
-- **Cursor:** blinking bar
-- **Status bar:** leader key indicator + live clock (bottom tab bar)
-- **Scrollback:** 10,000 lines
-- **Right-click:** paste
+## Tiling Shell
 
-## Alternatives Considered
+Windows-style snap zones for GNOME. Drag a window to trigger layout picker.
 
-| Terminal | Why I looked at it | Why I passed |
-|---|---|---|
-| **GNOME Terminal** | Default on Fedora, zero setup | No GPU rendering, no multiplexing, config is buried in gsettings |
-| **Alacritty** | Fast, GPU-accelerated, YAML/TOML config | No built-in tabs or pane splitting — still needs tmux on top |
-| **Kitty** | GPU-accelerated, scriptable, good font rendering | Python-based kittens feel bolted on; config less ergonomic than Lua |
-| **Tilix** | Tiling built into GNOME, familiar UX | GTK-dependent, not GPU-accelerated, development slowed down |
-| **Foot** | Wayland-native, minimal and fast | No multiplexing, limited scripting, designed for simplicity over power |
+### Install
 
-WezTerm won on: **Lua config + built-in multiplexing + GPU rendering** — all three in one package.
+```bash
+chmod +x tiling-shell-setup.sh
+./tiling-shell-setup.sh
+# Log out and back in to activate on Wayland
+```
 
-## Philosophy
+### Layouts
 
-Configured to feel like tmux without the overhead. If you already have tmux muscle memory, you'll be productive in under 5 minutes.
+| Layout | Description |
+|---|---|
+| Two Portrait | 2x2 grid — screen split like two portrait monitors |
+| Half & Half | Equal left/right halves |
+| Top & Bottom | Equal top/bottom halves |
+| Main + Side | 67/33 split |
+| 3 Columns | Equal thirds |
 
-The Lua config is readable and self-documenting — hack it to fit your workflow.
+---
+
+## Game Dock Guard
+
+Hides Dash to Dock on the primary monitor while any Steam game is running. Detects Steam's `reaper` process — fires for every game, not just one. On multi-monitor setups the dock stays on the secondary screen.
+
+### Install
+
+```bash
+cp game-dock-guard.sh ~/Dev/game-dock-guard.sh
+chmod +x ~/Dev/game-dock-guard.sh
+mkdir -p ~/.config/systemd/user
+cp game-dock-guard.service ~/.config/systemd/user/game-dock-guard.service
+systemctl --user daemon-reload
+systemctl --user enable --now game-dock-guard.service
+```
+
+Log: `~/.local/share/game-dock-guard.log`
